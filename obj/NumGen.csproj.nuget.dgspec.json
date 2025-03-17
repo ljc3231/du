@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\blue3\\Documents\\CoPADS\\NumGen\\du.csproj": {}
+    "C:\\Users\\blue3\\Documents\\CoPADS\\NumGen\\NumGen.csproj": {}
   },
   "projects": {
-    "C:\\Users\\blue3\\Documents\\CoPADS\\NumGen\\du.csproj": {
+    "C:\\Users\\blue3\\Documents\\CoPADS\\NumGen\\NumGen.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\blue3\\Documents\\CoPADS\\NumGen\\du.csproj",
-        "projectName": "du",
-        "projectPath": "C:\\Users\\blue3\\Documents\\CoPADS\\NumGen\\du.csproj",
+        "projectUniqueName": "C:\\Users\\blue3\\Documents\\CoPADS\\NumGen\\NumGen.csproj",
+        "projectName": "NumGen",
+        "projectPath": "C:\\Users\\blue3\\Documents\\CoPADS\\NumGen\\NumGen.csproj",
         "packagesPath": "C:\\Users\\blue3\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\blue3\\Documents\\CoPADS\\NumGen\\obj\\",
         "projectStyle": "PackageReference",

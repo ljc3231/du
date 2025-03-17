@@ -1,0 +1,15 @@
+C:\Users\blue3\Documents\CoPADS\NumGen\bin\Debug\net8.0\NumGen.exe
+C:\Users\blue3\Documents\CoPADS\NumGen\bin\Debug\net8.0\NumGen.deps.json
+C:\Users\blue3\Documents\CoPADS\NumGen\bin\Debug\net8.0\NumGen.runtimeconfig.json
+C:\Users\blue3\Documents\CoPADS\NumGen\bin\Debug\net8.0\NumGen.dll
+C:\Users\blue3\Documents\CoPADS\NumGen\bin\Debug\net8.0\NumGen.pdb
+C:\Users\blue3\Documents\CoPADS\NumGen\obj\Debug\net8.0\NumGen.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\blue3\Documents\CoPADS\NumGen\obj\Debug\net8.0\NumGen.AssemblyInfoInputs.cache
+C:\Users\blue3\Documents\CoPADS\NumGen\obj\Debug\net8.0\NumGen.AssemblyInfo.cs
+C:\Users\blue3\Documents\CoPADS\NumGen\obj\Debug\net8.0\NumGen.csproj.CoreCompileInputs.cache
+C:\Users\blue3\Documents\CoPADS\NumGen\obj\Debug\net8.0\NumGen.sourcelink.json
+C:\Users\blue3\Documents\CoPADS\NumGen\obj\Debug\net8.0\NumGen.dll
+C:\Users\blue3\Documents\CoPADS\NumGen\obj\Debug\net8.0\refint\NumGen.dll
+C:\Users\blue3\Documents\CoPADS\NumGen\obj\Debug\net8.0\NumGen.pdb
+C:\Users\blue3\Documents\CoPADS\NumGen\obj\Debug\net8.0\NumGen.genruntimeconfig.cache
+C:\Users\blue3\Documents\CoPADS\NumGen\obj\Debug\net8.0\ref\NumGen.dll
