@@ -25,21 +25,6 @@ class Program
         - count - the count of numbers to generate, defaults to 1";
     }   
 
-    public class PrimeValues{
-        public static List<int> primes = new List<int> {
-                3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
-                73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151,
-                157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233,
-                239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317,
-                331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419,
-                421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503,
-                509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607,
-                613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701,
-                709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811,
-                821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911,
-                919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997
-            };
-    }
 
     static BigInteger GenerateBigInt(int bits){
 
@@ -130,6 +115,11 @@ class Program
         List<Task> tasks = new List<Task>();
 
         if (opt == "odd"){
+
+            Stopwatch stopwatch = new Stopwatch(); //
+
+            stopwatch.Start(); 
+
             List<BigInteger> validNumbers = new List<BigInteger>();
             object lockObj = new object();
 
@@ -148,7 +138,10 @@ class Program
                             lock (lockObj)
                             {
                                 if (validNumbers.Count >= count) return; // Stop extra numbers
-                                validNumbers.Add(val);
+                                else {
+                                    taskNum++;
+                                    validNumbers.Add(val);
+                                }
                                 //Console.WriteLine($"validCount so far: {validNumbers.Count}");
                             }
 
@@ -162,16 +155,68 @@ class Program
                     }
                 }));
 
-                taskNum++;
+                //taskNum++;
 
                 await Task.Delay(20);
 
                 if (validNumbers.Count >= count) break; // Stop loop when we have enough numbers
             }
+            stopwatch.Stop(); 
+
+            double elapsedSeconds = stopwatch.Elapsed.TotalSeconds; 
+            Console.WriteLine("Time to Generate: " + elapsedSeconds);
         }
 
         else if(opt == "prime"){
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start(); 
 
+            Console.WriteLine("In prime");
+            // List<BigInteger> validNumbers = new List<BigInteger>();
+            object lockObj = new object();
+
+
+            while (true)
+            {
+                tasks.Add(Task.Run(async () =>
+                {
+                    try
+                    {
+                        BigInteger val = GenerateBigInt(bits);
+
+                        if (val % 2 == 1) // Ensure odd
+                        {
+                            lock (lockObj)
+                            {
+                                // Console.WriteLine(primeTaskNum);
+                                if (primeTaskNum >= count) return; // Stop extra numbers
+                                // else {
+                                //     validNumbers.Add(val);
+                                // }
+                                //Console.WriteLine($"validCount so far: {validNumbers.Count}");
+                            }
+
+                            await prime(val, bits);
+                            
+                            //Console.WriteLine($"Processed: {validNumbers.Count}, Val: {val}, Count: {count}");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Error: " + e);
+                    }
+                }));
+
+                //taskNum++;
+
+                await Task.Delay(20);
+
+                if (primeTaskNum >= count) break; // Stop loop when we have enough numbers
+            }
+            stopwatch.Stop(); 
+
+            double elapsedSeconds = stopwatch.Elapsed.TotalSeconds; 
+            Console.WriteLine("Time to Generate: " + elapsedSeconds);
         }
 
         // Console.WriteLine(tasks.Count);
@@ -187,27 +232,26 @@ class Program
     public static async Task odd(BigInteger val, int bitLen, int valid){
         //Console.WriteLine("Odd on: " + val);
 
-        Stopwatch stopwatch = new Stopwatch(); //
 
-        stopwatch.Start(); 
 
         //work
         //TEST System.Threading.Thread.Sleep(1500); 
         
         int factors = 1;
+        BigInteger temp = val;
 
-        if(val > 1){
+        if(temp > 1){
 
             //start @ 3 since odd, so no need for 2, i^2 is max cause root(i) is max factor
-            for(BigInteger i = 3; i * i <= val; i += 2){
+            for(BigInteger i = 3; i * i <= temp; i += 2){
 
                 //tracker for same factor multiple times
                 int exp = 0;
 
                 //while remainder doesnt exists (even divisibility)
-                while (val % i == 0){
+                while (temp % i == 0){
                     exp++; //add 1 to exp val
-                    val /= i; //divide, check for reminder
+                    temp /= i; //divide, check for reminder
                 }
                 if(exp > 0){ //after division multiple times, add exponend to factor amt
                     //add to count all values that would be able to make the found factor
@@ -216,12 +260,10 @@ class Program
             }
         }
 
-        if(val > 1){ //acount for prime value
+        if(temp > 1){ //acount for prime value
             factors *= 2;
         }
-        stopwatch.Stop(); 
 
-        double elapsedSeconds = stopwatch.Elapsed.TotalSeconds; 
 
         Console.WriteLine("BitLength: " + bitLen);
         Console.WriteLine(valid + ": " + val);
@@ -229,5 +271,106 @@ class Program
         Console.WriteLine();
 
         await Task.CompletedTask;
+    }
+
+
+    public static int primeTaskNum = 0;
+
+    public static async Task prime(BigInteger val, int bitLen){
+        // Console.WriteLine("TEST1");
+
+        //Used AI here to help solve a bug
+        //C:\Users\blue3\Documents\CoPADS\NumGen\Program.cs(15,7): 
+        //  error CS1106: Extension method must be defined in a 
+        //  non-generic static class [filepath]
+        //In turn, moved IsProbablyPrime() into its own class
+
+        bool isProbPrime = await Task.Run(() => val.IsProbablyPrime());
+        // Console.WriteLine(val + ": " + isProbPrime);
+        //test print for return paths 
+        //Console.WriteLine("iPP: " + isProbPrime + ": " + primeTaskNum);
+        if(isProbPrime){
+
+            int currentTaskNum = Interlocked.Increment(ref primeTaskNum);
+
+            Console.WriteLine("BitLength: " + bitLen + " bits");
+            Console.WriteLine(currentTaskNum + ": " + val);
+            Console.WriteLine();
+        }
+    }
+}
+
+public static class PrimalityTestExtensions{
+    //See function prime( ... ) for why this is moved here (bug fix)
+
+    //Returns True is probably prime, false otherwise
+    public static bool IsProbablyPrime( this BigInteger n, int k = 10){
+        
+        //Find S and D
+        // Console.WriteLine("Testing: " + n);
+        BigInteger d = n - 1;
+        int s = 0;
+
+        while(d%2==0){
+            d/=2;
+            s++;
+        } //keep taking out powers of 2 until you cant evenly
+
+        //S and D here set  
+
+        
+
+        int i = 0;
+        BigInteger y = 0;
+        //repeat k times
+
+        using(RandomNumberGenerator rng = RandomNumberGenerator.Create()){
+            while(i < k){
+                BigInteger a = GenerateRandomBigInteger(rng, 2, n-2); //this function from chatGPT
+                BigInteger x = BigInteger.ModPow(a, d, n);
+
+                int i2 = 0;
+                //repeat s times
+                while(i2 < s){
+                    y = BigInteger.ModPow(x, 2, n);
+
+                    //probably composite check 1
+                    if(y == 1 && x != 1 && (x != n-1)) return false;
+
+                    x = y;
+                    i2++;
+                }
+                //second composite check
+                if(y != 1) return false;
+
+
+                i++;
+            }      
+        }   
+        
+        //probably prime
+        return true;
+    }
+
+
+    //From ChatGPT with prompt "How can I generate random BigIntegers in C# between range of int and BigInteger"
+    public static BigInteger GenerateRandomBigInteger(RandomNumberGenerator rng, int min, BigInteger max)
+    {
+        // Convert max to a byte array
+        byte[] maxBytes = max.ToByteArray();
+        BigInteger result;
+
+        do
+        {
+            // Generate random bytes and use them to create a BigInteger
+            byte[] randomBytes = new byte[maxBytes.Length];
+            rng.GetBytes(randomBytes);
+
+            result = new BigInteger(randomBytes);
+
+            // Ensure that the result is within the desired range (min, max)
+        } while (result < min || result >= max);
+
+        return result;
     }
 }
